@@ -1,0 +1,217 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<aiml version = "2.0">
+  <category>
+    <pattern>Hi</pattern>
+    <template>Hello this bot will ask you several questions to help determine a career in the computer science field.<br/> <br/> 
+    <srai>Q1</srai>
+    </template>
+  </category>
+  
+  <!-- Q1 -->
+  <category>
+      <pattern>Q1</pattern>
+      <template>
+          Question 1: Which would you prefer more?<br/>
+        <button>
+            <text>Building software applications</text>
+            <postback>softwareengineer1</postback>
+        </button>
+        <button>
+            <text>Designing databases and building query tools</text>
+            <postback>databaseadministration1</postback>
+        </button>
+      </template>
+  </category>
+  
+    <!-- sets q1 variable based on user choice -->
+  <category>
+      <pattern>softwareengineer1</pattern>
+      <template>
+          <think>
+              <set name = "q1">softwareengineer1</set>
+          </think>
+          <srai>Q2</srai>
+      </template>
+  </category>
+  
+    <category>
+      <pattern>databaseadministration1</pattern>
+      <template>
+          <think>
+              <set name = "q1">databaseadministration1</set>
+          </think>
+          <srai>Q2</srai>
+      </template>
+  </category>
+
+  <!-- Q2 -->
+    <category>
+      <pattern>Q2</pattern>
+      <template>
+          Question 2: Which would you prefer more?<br/>
+        <button>
+            <text>Securing systems and defending against cyber threats</text>
+            <postback>cybersecurityanalyst1</postback>
+        </button>
+        <button>
+            <text>Building smart systems that learn from data</text>
+            <postback>machinelearningingineer1</postback>
+        </button>
+      </template>
+  </category>
+  
+    <!-- stores q2 answers and branches based on q1 answer -->
+  <category>
+      <pattern>cybersecurityanalyst1</pattern>
+      <template>
+          <think> 
+          <set name = "q2">cybersecurityanalyst1 </set>
+          <set name = "q2description"> Securing systems and defending against cyber threats</set>
+          </think>
+          <condition name = "q1">
+              <li value = "softwareengineer1">
+                  <srai>Q3A</srai>
+              </li>
+              <li>
+                  <srai>Q3B</srai>
+              </li>
+          </condition>
+      </template>
+  </category>
+  
+    <category>
+      <pattern>machinelearningingineer1</pattern>
+      <template>
+          <think> 
+          <set name = "q2">machinelearningingineer1 </set>
+          <set name = "q2description"> Building smart systems that learn from data</set>
+          </think>
+          <condition name = "q1">
+              <li value = "softwareengineer1">
+                  <srai>Q3A</srai>
+              </li>
+              <li>
+                  <srai>Q3B</srai>
+              </li>
+          </condition>
+      </template>
+  </category>
+  
+  <!-- Q3A -->
+    <category>
+      <pattern>Q3A</pattern>
+      <template>
+          Question 3: Which would you prefer more?<br/>
+        <button>
+            <text>Building software applications</text>
+            <postback>softwareengineer2</postback>
+        </button>
+        <button>
+            <text>Working with cloud infrastructure and deployment </text>
+            <postback>cloudengineer1</postback>
+        </button>
+      </template>
+  </category>
+  
+  
+    <!-- Q3B -->
+    <category>
+      <pattern>Q3B</pattern>
+      <template>
+          Question 3: Which would you prefer more?<br/>
+        <button>
+            <text>Designing databases and building query tools</text>
+            <postback>databaseadministration2</postback>
+        </button>
+        <button>
+            <text>Working with cloud infrastructure and deployment </text>
+            <postback>cloudengineer1</postback>
+        </button>
+      </template>
+  </category>
+  
+  
+      <!-- stores q3 answers and triggers Q4 -->
+  <category>
+      <pattern>softwareengineer2</pattern>
+      <template>
+          <think> 
+          <set name = "q3">softwareengineer2 </set>
+          <set name = "q3description"> Building software applications</set>
+          </think>
+                  <srai>Q4</srai>
+      </template>
+  </category>
+  
+    <category>
+      <pattern>databaseadministration2</pattern>
+      <template>
+          <think> 
+          <set name = "q3">databaseadministration2 </set>
+          <set name = "q3description"> Designing databases and building query tools</set>
+          </think>
+                  <srai>Q4</srai>
+      </template>
+  </category>
+  
+    <category>
+      <pattern>cloudengineer1</pattern>
+      <template>
+          <think> 
+          <set name = "q3">cloudengineer1 </set>
+          <set name = "q3description"> Working with cloud infrastructure and deployment</set>
+          </think>
+            <srai>Q4</srai>
+      </template>
+  </category>
+  
+    <!-- Q4 -->
+    <category>
+      <pattern>Q4</pattern>
+      <template>
+        Question 4: Which would you prefer more?<br/>
+        <button>
+          <text><get name="q2description"/></text>
+          <postback>CHOOSE <get name="q2"/></postback>
+        </button>
+        <button>
+          <text><get name="q3description"/></text>
+          <postback>CHOOSE <get name="q3"/></postback>
+        </button>
+      </template>
+    </category>
+    
+    <category>
+      <pattern>CHOOSE *</pattern>
+      <template>
+        <think> <set name = "q4" ><star/> </set>
+        </think>
+        <srai>recommended</srai>
+      </template>
+    </category>
+    
+    <!-- outputs recomened career field -->
+    <category>
+      <pattern>recommended</pattern>
+      <template>
+        <condition name="q4">
+          <li value="cybersecurityanalyst1">
+            Cyber security analyst would be a great fit for you as a career choice. 
+          </li>
+          <li value="machinelearningingineer1">
+            Machine learning engineer would be a great fit for you as a career choice.
+          </li>
+          <li value="softwareengineer2">
+            Software Engineer would be a great fit for you as a career choice.
+          </li>
+          <li value="databaseadministration2">
+            Database Administator would be a great fit for you as a career choice.
+          </li>
+          <li value="cloudengineer1">
+            Cloud engineer would be a great fit for you as a career choice.
+          </li>
+        </condition>
+      </template>
+    </category>
+
+  </aiml>
